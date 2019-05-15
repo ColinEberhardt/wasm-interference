@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+  <style>
+    body {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      background-color: #d4195d;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+    canvas {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="320" height="200"></canvas>
+  <script>
+    fetch('interference.wasm')
+      .then(response => response.arrayBuffer())
+      .then(bytes => WebAssembly.instantiate(bytes, {
+        math: {
+          sin: Math.sin,
+          cos: Math.cos
+        }
+      }))
+      .then(source => {
+        let instance = source.instance;
+        let canvasData = new Uint8Array(instance.exports.mem.buffer, 0, 320 * 200 * 4);
+        let canvas = document.querySelector('canvas');
+        let context = canvas.getContext('2d');
+        let imageData = context.createImageData(320, 200);
+        let tick = 0.0;
+        (function update() {
+          requestAnimationFrame(update);
+          instance.exports.run(tick);
+          imageData.data.set(canvasData);
+          context.putImageData(imageData, 0, 0);
+          tick+=0.04;
+        })();
+      });
+  </script>
+</body>
+
