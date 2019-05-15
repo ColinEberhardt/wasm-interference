@@ -81,12 +81,68 @@
   (local $cx2 f32)
   (local $cy2 f32)
 
-  (set_local $cx1 (f32.const 100))
-  (set_local $cy1 (f32.const 100))
+  (set_local $cx1 
+    (f32.add
+      (f32.mul
+        (f32.add
+          (call $sin
+            (f32.mul (get_local $tick) (f32.const 2))
+          )
+          (call $sin
+            (get_local $tick)
+          )
+        )
+        (f32.const 50)
+      )
+      (f32.const 160)
+    )
+  )
 
+  (set_local $cy1 
+    (f32.add
+      (f32.mul
+        (call $cos
+          (get_local $tick)
+        )
+        (f32.const 40)
+      )
+      (f32.const 100)
+    )
+  )
 
-  (set_local $cx2 (f32.const 150))
-  (set_local $cy2 (f32.const 150))
+  (set_local $cx2
+    (f32.add
+      (f32.mul
+        (f32.add
+          (call $sin
+            (f32.mul (get_local $tick) (f32.const 4))
+          )
+          (call $sin
+            (f32.add (get_local $tick) (f32.const 1.2))
+          )
+        )
+        (f32.const 50)
+      )
+      (f32.const 160)
+    )
+  )
+
+  (set_local $cy2 
+    (f32.add
+      (f32.mul
+        (f32.add
+          (call $sin
+            (f32.mul (get_local $tick) (f32.const 3))
+          )
+          (call $cos
+            (f32.add (get_local $tick) (f32.const 0.1))
+          )
+        )
+        (f32.const 40)
+      )
+      (f32.const 100)
+    )
+  )
 
   (set_local $y (i32.const 0))
   
@@ -97,69 +153,6 @@
 
       (block 
         (loop 
-
-          (set_local $cx1 
-            (f32.add
-              (f32.mul
-                (f32.add
-                  (call $sin
-                    (f32.mul (get_local $tick) (f32.const 2))
-                  )
-                  (call $sin
-                    (get_local $tick)
-                  )
-                )
-                (f32.const 50)
-              )
-              (f32.const 160)
-            )
-          )
-
-          (set_local $cy1 
-            (f32.add
-              (f32.mul
-                (call $cos
-                  (get_local $tick)
-                )
-                (f32.const 40)
-              )
-              (f32.const 100)
-            )
-          )
-
-          (set_local $cx2
-            (f32.add
-              (f32.mul
-                (f32.add
-                  (call $sin
-                    (f32.mul (get_local $tick) (f32.const 4))
-                  )
-                  (call $sin
-                    (f32.add (get_local $tick) (f32.const 1.2))
-                  )
-                )
-                (f32.const 50)
-              )
-              (f32.const 160)
-            )
-          )
-
-          (set_local $cy2 
-            (f32.add
-              (f32.mul
-                (f32.add
-                  (call $sin
-                    (f32.mul (get_local $tick) (f32.const 3))
-                  )
-                  (call $cos
-                    (f32.add (get_local $tick) (f32.const 0.1))
-                  )
-                )
-                (f32.const 40)
-              )
-              (f32.const 100)
-            )
-          )
 
           (call $setPixel
             (get_local $x)
